@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+    <div class="counter" align="center"> {{ game.generation }}</div>
+    <a href="{{ url_for('index') }}" class="btn btn-warning home">home</a>
+    <a href="{{ url_for('live') }}" class="btn btn-info refresh">reset</a>
+    <table class="world">
+        {{ game.form_new_generation() }}
+        {% for i in range(game.world | length) %}
+            <tr>
+                {% for j in range(game.world[0] | length) %}
+                    {% if game.world[i][j] %}
+                        <td class="cell living-cell"></td>
+                    {% elif not game.world[i][j] and game.old_world[i][j] %}
+                        <td class="cell dead-cell"></td>
+                    {% else %}
+                        <td class="cell"></td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script>setInterval(() => window.location.reload(), 1000);</script>
+{% endblock %}
